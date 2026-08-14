@@ -6,10 +6,10 @@
             <TextBlock Style="{DynamicResource SectionTitle}" Text="关于"/>
             <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
                 <StackPanel>
-                    <TextBlock FontSize="15" FontWeight="SemiBold" Text="Agent 提醒器" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock FontSize="15" FontWeight="SemiBold" Text="Agent 提醒器 · DeepSeek Harness" Foreground="{DynamicResource TextPrimaryBrush}"/>
                     <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0" Text="{Binding VersionText}"/>
                     <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0"
-                               Text="为 DeepSeek Web Harness / Claude Code 提供“需要介入”与“任务完成”双事件音频 + 通知提醒。"/>
+                               Text="支持 Claude Code 与 DeepSeek Harness 的提醒弹窗：需要介入 / 任务完成 双事件音频 + 通知。"/>
                     <CheckBox Margin="0,12,0,0" Content="开机自启动（后台常驻）" IsChecked="{Binding Autostart, Mode=TwoWay}"/>
                     <Grid Margin="0,12,0,0">
                         <Grid.ColumnDefinitions>
@@ -40,6 +40,8 @@
                     <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0" Text="M3：深色模式、崩溃日志、文档、单文件发布。"/>
                     <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0" Text="M4（当前）：应用内富通知弹窗——消息类型徽标（选择 / 权限 / 提交结果）+ 来源 Agent 标注 + 自定义图片与自定义内容模板。"/>
                     <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0" Text="窗口关闭 = 最小化到托盘常驻；右键托盘图标可显示主窗口 / 静音 / 退出。"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0"
+                               Text="角色形象：「吃白饭的蓝色大肥鱼」由 ZipZipPipe 创作（《鲸鱼娘》表情包角色），横幅图片由 ChatGPT 生成。"/>
                 </StackPanel>
             </Border>
         </StackPanel>

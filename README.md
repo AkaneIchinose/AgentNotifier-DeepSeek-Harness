@@ -1,4 +1,4 @@
-# Agent 提醒器（AgentNotifier）
+# AgentNotifier-DeepSeek-Harness（Agent 提醒器）
 
 > 🐟 **内置默认横幅图：「吃白饭的蓝色大肥鱼」** —— DeepSeek 系列模型（deepseek-v4-flash / deepseek-v4-pro）的弹窗默认图片
 
@@ -9,6 +9,8 @@
 ![吃白饭的蓝色大肥鱼（DeepSeek 默认弹窗横幅）](docs/fish.png)
 
 上面这张**吃白饭的蓝色大肥鱼**就是 DeepSeek 系列模型的默认弹窗横幅：识别到信号来自 `deepseek-v4-flash` / `deepseek-v4-pro` 时，弹窗顶部自动显示它（可在「通知」页为每个模型换成你自己的图片）。
+> 角色形象：「吃白饭的蓝色大肥鱼」由 **ZipZipPipe** 创作（《鲸鱼娘》表情包角色），横幅图片由 **ChatGPT** 生成。
+
 
 ## 功能
 
