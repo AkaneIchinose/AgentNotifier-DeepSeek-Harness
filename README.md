@@ -1,12 +1,21 @@
 # Agent 提醒器（AgentNotifier）
 
+> 🐟 **内置默认横幅图：「吃白饭的蓝色大肥鱼」** —— DeepSeek 系列模型（deepseek-v4-flash / deepseek-v4-pro）的弹窗默认图片
+
 为 **DeepSeek Web Harness / Claude Code** 提供提醒服务：需要用户介入 → 音效 + 弹窗；任务完成 → 另一音效 + 弹窗。Windows 桌面常驻工具，.NET 8 + WPF，零外部 NuGet 依赖。
+
+## 弹窗长这样
+
+![吃白饭的蓝色大肥鱼（DeepSeek 默认弹窗横幅）](docs/fish.png)
+
+上面这张**吃白饭的蓝色大肥鱼**就是 DeepSeek 系列模型的默认弹窗横幅：识别到信号来自 `deepseek-v4-flash` / `deepseek-v4-pro` 时，弹窗顶部自动显示它（可在「通知」页为每个模型换成你自己的图片）。
 
 ## 功能
 
 - **双端接入**：Claude Code（官方 hooks，一键接入/预览/回滚）；DSH（WebSocket 事件流 + 本机 RPC，零配置自动监听）
 - **应用内富通知弹窗**：消息类型徽标（选择 / 权限 / 提交结果）+ 来源 Agent 标注 + 自定义图片与内容模板
 - **模型样式（软件端自动识别）**：自动识别 DSH 会话所用模型，每个模型可完全自定义显示名、颜色、图片、弹窗标题与回复内容
+- **内置默认横幅图**：DeepSeek 模型（v4-flash / v4-pro）默认使用「吃白饭的蓝色大肥鱼」，随程序打包（`builtin:fish`），无外部文件依赖
 - 双事件音频（内置 8 款 + 自定义导入 WAV/MP3/FLAC）；去抖、勿扰时段、一键静音；深色模式；托盘常驻；开机自启
 - 通知样式可选：应用内弹窗（默认）/ 系统 Toast / 原生气泡
 
@@ -36,6 +45,7 @@ AgentNotifier/
 │   ├── AgentNotifier.Tools/    # Claude Code 接入向导
 │   └── AgentNotifier.Smoke/    # 自测程序
 ├── scripts/              # 构建 / 发布 / 日志脚本
+├── docs/                 # 文档素材（含默认横幅图「吃白饭的蓝色大肥鱼」）
 ├── dist/                 # 编译好的发行版（免安装，直接运行）
 ├── 需求文档.md           # 需求与设计决策记录
 ├── 开发日志/             # 每日开发记录
