@@ -11,6 +11,17 @@
 上面这张**吃白饭的蓝色大肥鱼**就是 DeepSeek 系列模型的默认弹窗横幅：识别到信号来自 `deepseek-v4-flash` / `deepseek-v4-pro` 时，弹窗顶部自动显示它（可在「通知」页为每个模型换成你自己的图片）。
 > 角色形象：「吃白饭的蓝色大肥鱼」由 **ZipZipPipe** 创作（《鲸鱼娘》表情包角色），横幅图片由 **ChatGPT** 生成。
 
+## 弹窗样例
+
+<p align="center">
+  <img src="docs/samples/sample-1.png" width="31%" alt="弹窗样例 1"/>
+  <img src="docs/samples/sample-2.png" width="31%" alt="弹窗样例 2"/>
+  <img src="docs/samples/sample-3.png" width="31%" alt="弹窗样例 3"/>
+</p>
+
+识别到不同模型的信号时，弹窗按该模型的样式显示：类型徽标、模型徽标、自定义横幅图、标题与回复内容均随模型配置变化。
+
+
 
 ## 功能
 
