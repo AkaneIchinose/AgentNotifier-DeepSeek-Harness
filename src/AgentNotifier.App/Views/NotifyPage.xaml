@@ -1,0 +1,277 @@
+<UserControl x:Class="AgentNotifier.App.Views.NotifyPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16,14">
+        <StackPanel>
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="通知设置"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <CheckBox Content="启用通知（总开关）" IsChecked="{Binding ToastEnabled, Mode=TwoWay}"/>
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="44"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="去抖窗口" FontSize="11" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,8,0"/>
+                        <Slider Grid.Column="1" Minimum="0" Maximum="300" IsSnapToTickEnabled="True" TickFrequency="5"
+                                Value="{Binding DebounceSec, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding DebounceText}" FontSize="11" TextAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,8,0,0"
+                               Text="去抖窗口内，同一工具同一会话的同类事件只提醒一次（如连续多次提问）。"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="勿扰时段"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding DndRules}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,3">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="0" Text="{Binding Label}" FontSize="12" VerticalAlignment="Center"/>
+                                    <Button Grid.Column="1" Style="{DynamicResource ChromeButton}" Content="✕" Width="26" Height="26"
+                                            Command="{Binding DataContext.RemoveDndCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
+                                            CommandParameter="{Binding}"/>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Style="{DynamicResource SubText}" Text="（空列表 = 不启用勿扰）" Margin="0,2,0,8"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0" Width="52" Text="{Binding NewDndStart, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <TextBlock Grid.Column="1" Text="–" Margin="4,0" VerticalAlignment="Center"/>
+                        <TextBox Grid.Column="2" Width="52" Text="{Binding NewDndEnd, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <ComboBox Grid.Column="3" Margin="8,0,8,0" ItemsSource="{Binding DndModeChoices}"
+                                  SelectedItem="{Binding NewDndMode, Mode=TwoWay}"/>
+                        <Button Grid.Column="4" Style="{DynamicResource PrimaryButton}" Content="添加" Command="{Binding AddDndCommand}"/>
+                    </Grid>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,8,0,0"
+                               Text="时间格式 HH:mm（如 22:00）；跨午夜（22:00–08:00）自动按跨天处理。"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="模型样式（按模型完全自定义）"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,0,0,10"
+                               Text="软件端会自动识别 DSH 会话使用的模型并加入下方列表；为每个模型单独设置显示名、颜色、图片、弹窗标题与回复内容，识别到的事件会按对应模型显示。"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="选择模型" FontSize="12" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,10,0"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding ModelStyles}" DisplayMemberPath="Display"
+                                  SelectedItem="{Binding SelectedModel, Mode=TwoWay}"/>
+                        <Button Grid.Column="2" Style="{DynamicResource PrimaryButton}" Content="预览此模型" Margin="8,0,0,0"
+                                Command="{Binding PreviewSelectedModelCommand}"/>
+                        <Button Grid.Column="3" Style="{DynamicResource SecondaryButton}" Content="重置默认" Margin="8,0,0,0"
+                                Command="{Binding ResetSelectedModelCommand}" ToolTip="模型本身保留，仅清空颜色/图片/标题/内容设置"/>
+                        <Button Grid.Column="4" Style="{DynamicResource DangerButton}" Content="删除" Margin="8,0,0,0"
+                                Command="{Binding DeleteSelectedModelCommand}" ToolTip="仅匹配规则类条目（无模型 ID）可删除；识别到的模型不可删除"/>
+                    </Grid>
+
+                    <Border Background="{DynamicResource AccentLightBrush}" CornerRadius="6" Padding="10,6" Margin="0,12,0,0">
+                        <StackPanel>
+                            <TextBlock FontSize="11" Foreground="{DynamicResource TextPrimaryBrush}"
+                                       Text="{Binding SelectedModelId, StringFormat=模型 ID（自动识别）：{0}}"/>
+                            <TextBlock Style="{DynamicResource SubText}" Margin="0,2,0,0" Text="{Binding SelectedStatus, StringFormat=状态：{0}}"/>
+                        </StackPanel>
+                    </Border>
+
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="显示名" FontSize="12" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Text="{Binding EditName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="弹窗模型徽标与列表显示的名字（如 DeepSeek-V4-Flash，可改成你喜欢的名字）"/>
+                    </Grid>
+
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="颜色" FontSize="12" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,10,0"/>
+                        <ComboBox Grid.Column="1" IsEditable="True" ItemsSource="{Binding ModelColorChoices}"
+                                  Text="{Binding EditColor, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  ToolTip="模型徽标与纯色横幅颜色（可输入任意 #RRGGBB）"/>
+                        <TextBlock Grid.Column="2" Text="（留空 = 按消息类型默认色）" FontSize="10" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="8,0,0,0"/>
+                    </Grid>
+
+                    <Grid Margin="0,10,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="横幅图片" FontSize="12" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Text="{Binding EditImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Grid.Column="2" Style="{DynamicResource SecondaryButton}" Content="选择…" Margin="8,0,0,0"
+                                Command="{Binding ChooseSelectedImageCommand}"/>
+                    </Grid>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0"
+                               Text="优先级：模型图片 → 全局图片 → 模型颜色纯色横幅。"/>
+
+                    <TextBlock Text="弹窗标题（模板）" FontSize="12" Margin="0,12,0,4"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBox Text="{Binding EditTitle, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="该模型的弹窗标题；支持占位符，留空用默认标题"/>
+
+                    <TextBlock Text="回复内容（模板）" FontSize="12" Margin="0,10,0,4"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBox AcceptsReturn="True" TextWrapping="Wrap" Height="72" VerticalScrollBarVisibility="Auto"
+                             Text="{Binding EditContent, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                             ToolTip="该模型弹窗正文；支持占位符，留空回退全局自定义内容，再留空显示事件摘要"/>
+
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,8,0,0"
+                               Text="占位符：{agent} 代理 · {tool} 工具 · {type} 类型 · {model} 模型 ID · {modelName} 模型显示名 · {session} 会话 · {summary} 摘要 · {time} 时间 · {title} 标题。"/>
+
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="手动添加模型 ID" FontSize="11" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,6,0"/>
+                        <TextBox Grid.Column="1" Text="{Binding NewModelId, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                 ToolTip="如 deepseek-v4-pro；未自动识别到的模型可手动加入"/>
+                        <Button Grid.Column="2" Style="{DynamicResource SecondaryButton}" Content="添加" Margin="8,0,0,0"
+                                Command="{Binding AddManualModelCommand}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+<TextBlock Style="{DynamicResource SectionTitle}" Text="说明：默认样式与占位符"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,0,0,6"
+                               Text="未配置样式的模型（或未匹配到模型的事件）使用默认样式；识别到的模型永远保留在列表中，只能「重置默认」，不能删除。"/>
+                    <Border Background="{DynamicResource AccentLightBrush}" CornerRadius="6" Padding="10,8" Margin="0,0,0,8">
+                        <StackPanel>
+                            <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Text="默认样式长这样"/>
+                            <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0" TextWrapping="Wrap"
+                                       Text="例：某未配置模型的会话发起「权限请求」时，弹窗为：类型徽标 [权限]（橙色）+ 灰色模型徽标（显示模型显示名）+ 标题「需要你的介入」+ 正文=全局自定义内容（留空则显示事件摘要）+ 横幅=全局图片（留空则无横幅）。"/>
+                            <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0" TextWrapping="Wrap"
+                                       Text="类型徽标颜色：选择=浅蓝 · 权限=橙色 · 提交结果=绿色 · 需要介入=橙色 · 任务完成=绿色。"/>
+                        </StackPanel>
+                    </Border>
+                    <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Margin="0,0,0,4" Text="词组（占位符）分别指代什么"/>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="118"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentDarkBrush}" Text="{}{agent}"/><TextBlock Grid.Row="0" Grid.Column="1" Style="{DynamicResource SubText}" Text="代理标识：会话标题（短ID），如「完善窗口提醒（a1b2c3d4e5）」"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentDarkBrush}" Text="{}{tool}"/><TextBlock Grid.Row="1" Grid.Column="1" Style="{DynamicResource SubText}" Text="工具名，如 DSH / Claude Code"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentDarkBrush}" Text="{}{type}"/><TextBlock Grid.Row="2" Grid.Column="1" Style="{DynamicResource SubText}" Text="消息类型：选择 / 权限 / 提交结果 / 需要介入 / 任务完成"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentDarkBrush}" Text="{}{model}"/><TextBlock Grid.Row="3" Grid.Column="1" Style="{DynamicResource SubText}" Text="模型 ID，如 deepseek-v4-flash"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentDarkBrush}" Text="{}{modelName}"/><TextBlock Grid.Row="4" Grid.Column="1" Style="{DynamicResource SubText}" Text="模型显示名（你在上方改的名字），如 DeepSeek-V4-Flash"/>
+                        <TextBlock Grid.Row="5" Grid.Column="0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentDarkBrush}" Text="{}{session}"/><TextBlock Grid.Row="5" Grid.Column="1" Style="{DynamicResource SubText}" Text="会话 ID，如 a1b2c3d4e5f6g7h8"/>
+                        <TextBlock Grid.Row="6" Grid.Column="0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentDarkBrush}" Text="{}{summary}"/><TextBlock Grid.Row="6" Grid.Column="1" Style="{DynamicResource SubText}" Text="事件摘要，如「权限请求：run_code」"/>
+                        <TextBlock Grid.Row="7" Grid.Column="0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentDarkBrush}" Text="{}{time}"/><TextBlock Grid.Row="7" Grid.Column="1" Style="{DynamicResource SubText}" Text="弹窗时间，如 22:30:15"/>
+                        <TextBlock Grid.Row="8" Grid.Column="0" FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource AccentDarkBrush}" Text="{}{title}"/><TextBlock Grid.Row="8" Grid.Column="1" Style="{DynamicResource SubText}" Text="弹窗标题（默认「需要你的介入 / 任务完成」）"/>
+                    </Grid>
+                    <Border Background="{DynamicResource AccentLightBrush}" CornerRadius="6" Padding="10,8" Margin="0,8,0,0">
+                        <StackPanel>
+                            <TextBlock FontSize="11" FontWeight="SemiBold" Foreground="{DynamicResource TextPrimaryBrush}" Text="举个例子"/>
+                            <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0" TextWrapping="Wrap"
+                                       Text="标题模板写「{modelName} 需要你」+ 内容模板写「来自 {agent} 的 {type} 消息」→ 实际弹窗：标题「DeepSeek-V4-Flash 需要你」，正文「来自 完善窗口提醒（a1b2c3d4e5）的 选择 消息」。"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="默认弹窗内容（未匹配模型的兜底）"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="通知样式" FontSize="12" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,10,0"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding NotifyModeChoices}" SelectedItem="{Binding NotifyMode, Mode=TwoWay}"/>
+                    </Grid>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0"
+                               Text="应用内弹窗：自定义图片 + 自定义内容 + 来源 Agent 与消息类型徽标；系统 Toast / 原生气泡为系统默认样式。"/>
+
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="弹窗图片" FontSize="12" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,10,0"/>
+                        <TextBox Grid.Column="1" Text="{Binding PopupImagePath, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Grid.Column="2" Style="{DynamicResource SecondaryButton}" Content="选择…" Margin="8,0,0,0"
+                                Command="{Binding ChoosePopupImageCommand}"/>
+                    </Grid>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0" Text="{Binding PopupImagePathHint}"/>
+
+                    <TextBlock Text="自定义内容" FontSize="12" Margin="0,12,0,4"
+                               Foreground="{DynamicResource TextSecondaryBrush}"/>
+                    <TextBox AcceptsReturn="True" TextWrapping="Wrap" Height="84" VerticalScrollBarVisibility="Auto"
+                             Text="{Binding PopupCustomText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0"
+                               Text="占位符：{agent} 代理 · {tool} 工具 · {type} 类型 · {model} 模型 · {modelName} 模型显示名 · {session} 会话 · {summary} 摘要 · {time} 时间 · {title} 标题。留空 = 直接显示事件摘要。"/>
+
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="44"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="显示时长" FontSize="11" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,8,0"/>
+                        <Slider Grid.Column="1" Minimum="3" Maximum="30" IsSnapToTickEnabled="True" TickFrequency="1"
+                                Value="{Binding PopupDurationSec, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding PopupDurationText}" FontSize="11" TextAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+
+                    <Button Style="{DynamicResource PrimaryButton}" Content="预览弹窗效果" Margin="0,14,0,0"
+                            HorizontalAlignment="Left" Command="{Binding PreviewPopupCommand}"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="说明"/>
+            <Border Style="{DynamicResource Card}">
+                <TextBlock Style="{DynamicResource SubText}"
+                           Text="应用内弹窗显示在屏幕右下角并自动堆叠：彩色徽标标注消息类型（选择 / 权限 / 提交结果），旁边标注来源 Agent 与会话；点击弹窗可打开主窗口。弹窗图片与自定义内容在弹窗设置中配置。系统 Toast（操作中心）与原生气泡为备选样式。"/>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

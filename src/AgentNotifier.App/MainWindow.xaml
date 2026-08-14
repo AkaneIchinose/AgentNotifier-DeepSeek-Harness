@@ -1,0 +1,28 @@
+<Window x:Class="AgentNotifier.App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Agent 提醒器"
+        Width="440" Height="680" MinWidth="420" MinHeight="560"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource WindowBgBrush}"
+        Icon="/agentnotifier.ico"
+        WindowStyle="SingleBorderWindow" ResizeMode="CanResize"
+        Closing="Window_Closing">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Menu x:Name="NavMenu" Grid.Row="0" Background="Transparent">
+            <MenuItem x:Name="NavOverview" Header="概览" Tag="overview" IsChecked="True" IsCheckable="True" Click="Nav_Click"/>
+            <MenuItem x:Name="NavAudio" Header="音频" Tag="audio" IsCheckable="True" Click="Nav_Click"/>
+            <MenuItem x:Name="NavNotify" Header="通知" Tag="notify" IsCheckable="True" Click="Nav_Click"/>
+            <MenuItem x:Name="NavOnboard" Header="接入" Tag="onboard" IsCheckable="True" Click="Nav_Click"/>
+            <MenuItem x:Name="NavAbout" Header="关于" Tag="about" IsCheckable="True" Click="Nav_Click"/>
+        </Menu>
+        <Border Grid.Row="1" Margin="10,8,10,10" CornerRadius="10" Background="White"
+                BorderBrush="{DynamicResource BorderBrush}" BorderThickness="1">
+            <ContentControl x:Name="PageHost" Content="{Binding CurrentPage}"/>
+        </Border>
+    </Grid>
+</Window>

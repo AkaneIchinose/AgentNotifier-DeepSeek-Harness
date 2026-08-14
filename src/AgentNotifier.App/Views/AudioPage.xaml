@@ -1,0 +1,117 @@
+<UserControl x:Class="AgentNotifier.App.Views.AudioPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16,14">
+        <StackPanel>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Style="{DynamicResource SectionTitle}" Text="需要介入（提问 / 权限请求）"/>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" ItemsSource="{Binding SoundChoices}" DisplayMemberPath="Display"
+                                  SelectedItem="{Binding NeedsUserChoice}"/>
+                        <Button Grid.Column="1" Style="{DynamicResource SecondaryButton}" Content="试听"
+                                Command="{Binding PreviewNeedsUserCommand}" Margin="8,0,0,0"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="52"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="音量" FontSize="11" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <Slider Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding NeedsUserVolume, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding NeedsUserVolume}" FontSize="11" TextAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="52"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="响铃次数" FontSize="11" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <Slider Grid.Column="1" Minimum="1" Maximum="10" IsSnapToTickEnabled="True" TickFrequency="1"
+                                Value="{Binding NeedsUserRepeats, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding NeedsUserRepeats}" FontSize="11" TextAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="52"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="间隔(秒)" FontSize="11" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <Slider Grid.Column="1" Minimum="0.5" Maximum="10" SmallChange="0.5" LargeChange="1"
+                                Value="{Binding NeedsUserInterval, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding NeedsUserInterval, StringFormat=0.0}" FontSize="11" TextAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Style="{DynamicResource SectionTitle}" Text="任务完成（结果 / 交付）"/>
+                    <Grid Margin="0,0,0,8">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <ComboBox Grid.Column="0" ItemsSource="{Binding SoundChoices}" DisplayMemberPath="Display"
+                                  SelectedItem="{Binding DoneChoice}"/>
+                        <Button Grid.Column="1" Style="{DynamicResource SecondaryButton}" Content="试听"
+                                Command="{Binding PreviewDoneCommand}" Margin="8,0,0,0"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="52"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="音量" FontSize="11" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <Slider Grid.Column="1" Minimum="0" Maximum="100" Value="{Binding DoneVolume, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding DoneVolume}" FontSize="11" TextAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="52"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="响铃次数" FontSize="11" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <Slider Grid.Column="1" Minimum="1" Maximum="10" IsSnapToTickEnabled="True" TickFrequency="1"
+                                Value="{Binding DoneRepeats, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding DoneRepeats}" FontSize="11" TextAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                    <Grid Margin="0,4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="52"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="34"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Text="间隔(秒)" FontSize="11" VerticalAlignment="Center" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                        <Slider Grid.Column="1" Minimum="0.5" Maximum="10" SmallChange="0.5" LargeChange="1"
+                                Value="{Binding DoneInterval, Mode=TwoWay}"/>
+                        <TextBlock Grid.Column="2" Text="{Binding DoneInterval, StringFormat=0.0}" FontSize="11" TextAlignment="Right" VerticalAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="自定义音频"/>
+            <Border Style="{DynamicResource Card}">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{DynamicResource PrimaryButton}" Content="导入 WAV 音频" Command="{Binding ImportSoundCommand}" Margin="0,0,8,0"/>
+                        <Button Style="{DynamicResource SecondaryButton}" Content="删除选中的自定义音频" Command="{Binding DeleteCustomSoundCommand}"/>
+                    </StackPanel>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,10,0,0"
+                               Text="支持 WAV(PCM) 与 MP3 导入（MP3 走 Windows Media 播放）；flac / ogg 暂不支持。导入后可分别指定给两种事件。"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0"
+                               Text="内置音效包含 5 款合成音（柔和叮咚 / 清脆提示 / 悠扬铃声 / 科技脉冲 / 复古通知）与 5 款 Windows 经典提示音（若系统存在）。"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

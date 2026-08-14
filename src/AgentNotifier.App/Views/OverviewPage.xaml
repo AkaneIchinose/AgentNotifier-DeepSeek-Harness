@@ -1,0 +1,76 @@
+<UserControl x:Class="AgentNotifier.App.Views.OverviewPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16,14">
+        <StackPanel>
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="工具状态"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <ItemsControl ItemsSource="{Binding ToolStates}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0,5">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="14"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Ellipse Grid.Column="0" Width="8" Height="8" Fill="{Binding Color}" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" FontSize="12" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="2" Text="{Binding Text}" FontSize="11"
+                                           Foreground="{DynamicResource TextSecondaryBrush}" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="事件服务"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Ellipse Width="8" Height="8" Fill="{Binding ServerStatusColor}" VerticalAlignment="Center"/>
+                        <TextBlock FontSize="12" Text="{Binding ServerStatusText}" Margin="6,0,0,0"/>
+                    </StackPanel>
+                    <TextBlock FontSize="12" Margin="0,4,0,0" Text="{Binding ServerInfo}"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0" Text="{Binding TokenShort}"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0"
+                               Text="Claude Code 的 hooks 会向该本机地址上报事件，仅在 127.0.0.1 监听。"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="最近事件"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12" MaxHeight="170">
+                <ListBox ItemsSource="{Binding RecentEvents}" BorderThickness="0" Background="Transparent"
+                         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Margin="0,3">
+                                <TextBlock FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}">
+                                    <Run Text="{Binding Time, StringFormat=HH:mm:ss}"/><Run Text="  "/><Run Text="{Binding Tool}"/><Run Text=" · "/><Run Text="{Binding Kind}"/>
+                                </TextBlock>
+                                <TextBlock FontSize="12" Text="{Binding Summary}" TextTrimming="CharacterEllipsis"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="提醒状态与测试"/>
+            <Border Style="{DynamicResource Card}">
+                <StackPanel>
+                    <Grid Margin="0,0,0,10">
+                        <TextBlock FontSize="12" Text="{Binding MutedText}" VerticalAlignment="Center"/>
+                        <Button Style="{DynamicResource SecondaryButton}" HorizontalAlignment="Right" Content="切换静音"
+                                Command="{Binding ToggleMuteCommand}" CommandParameter="x"/>
+                    </Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{DynamicResource PrimaryButton}" Content="测试：需要介入" Command="{Binding TestNeedsUserCommand}" Margin="0,0,8,0"/>
+                        <Button Style="{DynamicResource SecondaryButton}" Content="测试：任务完成" Command="{Binding TestDoneCommand}"/>
+                    </StackPanel>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,10,0,0"
+                               Text="测试会触发对应音频与系统通知，便于验证效果。"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

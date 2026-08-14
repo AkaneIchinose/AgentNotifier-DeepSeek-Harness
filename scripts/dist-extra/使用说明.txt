@@ -1,0 +1,51 @@
+Agent 提醒器 v0.3（M1+M2+M3+M4）绿色版使用说明
+========================================
+
+一、运行
+  1. 双击 AgentNotifier.exe 启动（常驻系统托盘，关闭窗口 = 最小化到托盘）。
+  2. 若提示缺少 .NET 运行时，请安装 .NET 8 Desktop Runtime（Windows x64）：
+     https://dotnet.microsoft.com/download/dotnet/8.0
+  3. 注意：绿色版需要保留本目录下全部文件（exe + dll + runtimeconfig 等），
+     不要把 exe 单独拷走运行。
+
+二、接入与提醒（Claude Code + DSH）
+  1. Claude Code：「接入」页一键接入（写入官方 hooks，自动备份，可预览/回滚）。
+     - Notification：权限请求 → "需要介入"
+     - PreToolUse：提问（AskUserQuestion）→ "需要介入"
+     - Stop：任务完成 → "任务完成"
+  2. DSH（DeepSeek Web Harness）：无需任何配置！软件自动连接其 WebSocket 事件流
+     （/api/events.mux 与 /api/events.host），概览页可看到"已监听"状态。
+     - 提问（选择）→ "需要介入"音效 + 弹窗（类型徽标：选择）
+     - 权限请求 → "需要介入"音效 + 弹窗（类型徽标：权限）
+     - agent 停止运行（提交结果）→ "任务完成"音效 + 弹窗（类型徽标：提交结果）
+  3. 需要你亲自处理的提醒与任务完成提醒使用不同音效，可分别设置。
+  4. 弹窗会标注来源 Agent（如"DSH 会话 ab12cd34ef"）与消息类型彩色徽标，
+     并显示你自定义的图片与内容；点击弹窗可打开主窗口。
+  5. 模型样式（软件端自动识别）：程序自动识别 DSH 会话使用的模型并加入列表；
+     每个模型可完全自定义显示名、颜色、横幅图片、弹窗标题与回复内容（支持占位符），
+     弹窗按来源模型套用对应样式，一眼区分消息来自哪个模型。
+
+三、恢复原样（一键删除）
+  - 软件「接入」页 → "执行一键恢复"，或运行本目录 uninstall.ps1。
+  - 效果：删除写入的 hooks → 还原备份 → 清理辅助文件（DSH 无需清理，零配置）。
+
+四、设置
+  - 音频：两种事件独立音效/音量/次数/间隔；支持导入 WAV(PCM) 与 MP3/FLAC。
+  - 通知：通知样式三选一（应用内弹窗（默认）/ 系统 Toast / 原生气泡）；
+    弹窗可自定义顶部图片与内容模板（占位符 {agent} {tool} {type} {model} {session} {summary} {time} {title}）、
+    显示时长；模型样式列表（按模型名/工具名匹配，独立颜色与图片）；
+    「通知」页有预览按钮即时查看效果；去抖窗口；勿扰时段；一键静音。
+  - 显示：应用为 DPI 感知（高 DPI 屏幕文字清晰、弹窗位置精确）。
+  - 主题：「关于」页可切换 跟随系统 / 浅色 / 深色（跟随系统时随 Windows 实时变化）。
+  - 测试：概览页"测试"按钮可立即验证响铃与通知。
+
+五、数据位置
+  - 配置：%APPDATA%\AgentNotifier\config.json
+  - 事件日志：%APPDATA%\AgentNotifier\logs\events.log
+  - 崩溃日志：exe 同目录 crash.log
+  - 自定义音频：%APPDATA%\AgentNotifier\custom\
+
+六、已知限制
+  - Win11 系统通知固定右下角（Win10 可在系统设置调整位置）。
+  - ogg 暂不支持；单文件发布需网络（scripts/publish.ps1）。
+  - opencode 官方当前版本未实现 hooks（1.18.18 无执行引擎），暂不支持接入。

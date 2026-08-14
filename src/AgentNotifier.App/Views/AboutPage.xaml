@@ -1,0 +1,47 @@
+<UserControl x:Class="AgentNotifier.App.Views.AboutPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16,14">
+        <StackPanel>
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="关于"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock FontSize="15" FontWeight="SemiBold" Text="Agent 提醒器" Foreground="{DynamicResource TextPrimaryBrush}"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0" Text="{Binding VersionText}"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,4,0,0"
+                               Text="为 DeepSeek Web Harness / Claude Code 提供“需要介入”与“任务完成”双事件音频 + 通知提醒。"/>
+                    <CheckBox Margin="0,12,0,0" Content="开机自启动（后台常驻）" IsChecked="{Binding Autostart, Mode=TwoWay}"/>
+                    <Grid Margin="0,12,0,0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="深色模式" FontSize="12" VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextSecondaryBrush}" Margin="0,0,10,0"/>
+                        <ComboBox Grid.Column="1" ItemsSource="{Binding ThemeChoices}" SelectedItem="{Binding Theme, Mode=TwoWay}"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="目录"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <Button Style="{DynamicResource SecondaryButton}" Content="打开数据目录（配置 / 自定义音频）" Command="{Binding OpenDataDirCommand}" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                    <Button Style="{DynamicResource SecondaryButton}" Content="打开事件日志目录" Command="{Binding OpenLogDirCommand}" HorizontalAlignment="Stretch" Margin="0,0,0,6"/>
+                    <Button Style="{DynamicResource SecondaryButton}" Content="打开程序目录（uninstall.ps1 所在）" Command="{Binding OpenAppDirCommand}" HorizontalAlignment="Stretch"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="版本说明"/>
+            <Border Style="{DynamicResource Card}">
+                <StackPanel>
+                    <TextBlock Style="{DynamicResource SubText}" Text="M1：Claude Code hooks 接入、双事件音频（合成 + Windows 经典音效 + WAV 自定义导入）、原生气泡通知、勿扰/去抖/静音、托盘常驻、一键恢复脚本。"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0" Text="M2：DSH WebSocket 监听、系统 Toast、mp3/flac 导入、事件日志增强。"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0" Text="M3：深色模式、崩溃日志、文档、单文件发布。"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0" Text="M4（当前）：应用内富通知弹窗——消息类型徽标（选择 / 权限 / 提交结果）+ 来源 Agent 标注 + 自定义图片与自定义内容模板。"/>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,6,0,0" Text="窗口关闭 = 最小化到托盘常驻；右键托盘图标可显示主窗口 / 静音 / 退出。"/>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

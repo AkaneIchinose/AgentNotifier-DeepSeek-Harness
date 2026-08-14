@@ -1,0 +1,13 @@
+<Application x:Class="AgentNotifier.App.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:app="clr-namespace:AgentNotifier.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/Theme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <app:BoolToTextConverter x:Key="BoolToText"/>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

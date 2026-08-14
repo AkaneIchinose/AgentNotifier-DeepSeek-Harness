@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>12</LangVersion>
+    <RootNamespace>AgentNotifier.App</RootNamespace>
+    <AssemblyName>AgentNotifier</AssemblyName>
+    <ApplicationIcon>agentnotifier.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AgentNotifier.Core\AgentNotifier.Core.csproj" />
+    <ProjectReference Include="..\AgentNotifier.Audio\AgentNotifier.Audio.csproj" />
+    <ProjectReference Include="..\AgentNotifier.Notify\AgentNotifier.Notify.csproj" />
+    <ProjectReference Include="..\AgentNotifier.Tools\AgentNotifier.Tools.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="agentnotifier.ico" />
+    <!-- 内置默认横幅图（大肥鱼）：模型样式用 "builtin:fish" 引用，打包进 exe，不含任何路径信息 -->
+    <Resource Include="fish.png" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,71 @@
+<UserControl x:Class="AgentNotifier.App.Views.OnboardPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="16,14">
+        <StackPanel>
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="接入向导（Claude Code）"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <ItemsControl ItemsSource="{Binding ToolStates}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="0,6">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="14"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Ellipse Grid.Column="0" Width="8" Height="8" Fill="{Binding Color}" VerticalAlignment="Center"/>
+                                    <StackPanel Grid.Column="1">
+                                        <TextBlock Text="{Binding Name}" FontSize="12"/>
+                                        <TextBlock Text="{Binding Text}" FontSize="11" Foreground="{DynamicResource TextSecondaryBrush}"/>
+                                        <TextBlock Text="{Binding Detail}" FontSize="10" Foreground="{DynamicResource TextSecondaryBrush}" TextWrapping="Wrap"/>
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,10,0,0"
+                               Text="接入会向 Claude Code 官方配置文件写入 hooks（Notification：权限请求；PreToolUse：提问；Stop：完成），写入前自动备份原文件，可随时回滚或一键恢复。"/>
+                </StackPanel>
+            </Border>
+
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <TextBlock Style="{DynamicResource SectionTitle}" Text="Claude Code"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,0,0,4">
+                        <Button Style="{DynamicResource PrimaryButton}" Content="一键接入" Command="{Binding InstallClaudeCommand}" Margin="0,0,8,0"/>
+                        <Button Style="{DynamicResource SecondaryButton}" Content="回滚" Command="{Binding RollbackClaudeCommand}" Margin="0,0,8,0"/>
+                        <Button Style="{DynamicResource SecondaryButton}" Content="预览配置" Command="{Binding PreviewClaudeCommand}"/>
+                    </StackPanel>
+                    <TextBlock Style="{DynamicResource SubText}" Text="配置文件：~/.claude/settings.json"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="配置预览"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <TextBox Text="{Binding PreviewText}" IsReadOnly="True" TextWrapping="Wrap" AcceptsReturn="True"
+                         FontFamily="Consolas" FontSize="11" MinHeight="120" MaxHeight="220"
+                         VerticalScrollBarVisibility="Auto" Background="{DynamicResource BgBrush}"/>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="一键恢复"/>
+            <Border Style="{DynamicResource Card}" Margin="0,0,0,12">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Style="{DynamicResource PrimaryButton}" Content="生成恢复脚本到软件目录" Command="{Binding WriteUninstallCommand}" Margin="0,0,8,0"/>
+                        <Button Style="{DynamicResource DangerButton}" Content="执行一键恢复" Command="{Binding RunUninstallCommand}"/>
+                    </StackPanel>
+                    <TextBlock Style="{DynamicResource SubText}" Margin="0,10,0,0"
+                               Text="执行一键恢复会：删除写入的 hooks → 从备份还原原始配置 → 清理上报脚本与令牌文件。项目文件夹内也维护一份 uninstall.ps1（scripts/）。"/>
+                </StackPanel>
+            </Border>
+
+            <TextBlock Style="{DynamicResource SectionTitle}" Text="DSH Web Harness"/>
+            <Border Style="{DynamicResource Card}">
+                <TextBlock Style="{DynamicResource SubText}"
+                           Text="DeepSeek 官方 Web Harness 通过官方 WebSocket 事件流（/api/events.mux 与 /api/events.host）自动监听：提问与权限请求触发“需要介入”，agent 停止运行触发“任务完成”。无需修改任何配置；DSH 未运行时自动重连。"/>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

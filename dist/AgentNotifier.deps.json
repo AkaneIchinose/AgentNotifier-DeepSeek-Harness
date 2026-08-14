@@ -1,0 +1,84 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v8.0",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v8.0": {
+      "AgentNotifier/1.0.0": {
+        "dependencies": {
+          "AgentNotifier.Audio": "1.0.0",
+          "AgentNotifier.Core": "1.0.0",
+          "AgentNotifier.Notify": "1.0.0",
+          "AgentNotifier.Tools": "1.0.0"
+        },
+        "runtime": {
+          "AgentNotifier.dll": {}
+        }
+      },
+      "AgentNotifier.Audio/1.0.0": {
+        "runtime": {
+          "AgentNotifier.Audio.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AgentNotifier.Core/1.0.0": {
+        "runtime": {
+          "AgentNotifier.Core.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AgentNotifier.Notify/1.0.0": {
+        "runtime": {
+          "AgentNotifier.Notify.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      },
+      "AgentNotifier.Tools/1.0.0": {
+        "dependencies": {
+          "AgentNotifier.Core": "1.0.0"
+        },
+        "runtime": {
+          "AgentNotifier.Tools.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
+        }
+      }
+    }
+  },
+  "libraries": {
+    "AgentNotifier/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AgentNotifier.Audio/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AgentNotifier.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AgentNotifier.Notify/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AgentNotifier.Tools/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}
